@@ -6,10 +6,10 @@ require 'scourb/version'
 Gem::Specification.new do |spec|
   spec.name          = "scourb"
   spec.version       = Scourb::VERSION
-  spec.authors       = ["liwei"]
+  spec.authors       = ["Rique Li"]
   spec.email         = ["hi@liwei.me"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Scour hacked words and links in source code files}
+  spec.summary       = %q{Scour hacked files}
   spec.homepage      = ""
   spec.license       = "MIT"
 
