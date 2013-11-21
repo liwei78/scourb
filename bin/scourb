@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+STDOUT.sync = true
+
+$:.unshift File.join(File.dirname(__FILE__), *%w{ .. lib })
+
+require 'commander/import'
+require 'scourb'
+
+program :name, 'Scourb'
+program :version, '0.0.1'
+program :description, 'grep tool in ruby'
+
+default_command :grep
+
+command :grep do |cmd|
+  cmd.syntax = 'scourb greb <arg> [opt]'
+  cmd.description = 'sh grep'
+
+  cmd.option '-T', '--target FILE[,FILE2,...]', Array, 'image url'
+  cmd.option '--wdict', 'use words dict'
+  cmd.option '--ldict', 'use links dict'
+
+  cmd.action do |arg, opt|
+    Scourb::Command.grep(opt.__hash__)
+  end
+end
