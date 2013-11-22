@@ -8,18 +8,22 @@ require 'scourb'
 
 program :name, 'Scourb'
 program :version, '0.0.1'
-program :description, 'grep tool in ruby'
+program :description, 'Find word in files, such as hack-word in HTMLs.'
 
 default_command :grep
+
+# ./bin/scourb -F 兑现，从表面到内在，从一时之需到制度创新 -E html -C gbk
+# ./bin/scourb --find=兑现，从表面到内在，从一时之需到制度创新 --ext=html --charset=gbk
 
 command :grep do |cmd|
   cmd.syntax = 'scourb greb <arg> [opt]'
   cmd.description = 'sh grep'
 
-  cmd.option '-T', '--target FILE[,FILE2,...]', Array, 'image url'
-  cmd.option '--wdict', 'use words dict'
-  cmd.option '--ldict', 'use links dict'
-
+  cmd.option '-D', '--dir DIR[,DIR,...]', Array, 'target dirs, `--dir=html,uploads,data` eg.'
+  cmd.option '-F', '--find WORD', String, 'finding word'
+  cmd.option '-C', '--charset ENCODE', String, 'default utf-8, `--charset=gbk`'
+  cmd.option '-E', '--ext EXT', String, 'file.ext, such as `html`'
+  
   cmd.action do |arg, opt|
     Scourb::Command.grep(opt.__hash__)
   end

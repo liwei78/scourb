@@ -3,17 +3,9 @@
 module Scourb
   class Command
 
-    @@links_file = File.join('dict', 'links.txt')
-    @@words_file = File.join('dict', 'words.txt')
-    @@links = []
-    @@words = []
-    @@finds = []
-
     def self.grep(opt)
-      read_words
-      @@words.each do |word|
-        system("grep -r '#{word.strip}' .")
-      end
+      coward = Coward.new(opt)
+      coward.fight
     end
 
     protected
