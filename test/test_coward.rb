@@ -23,18 +23,6 @@ class TestCoward < Test::Unit::TestCase
 
   context "call without options" do
 
-    should "raise dir error" do
-      assert_raise Scourb::DirException do
-        Scourb::Coward.new(attrs.merge(dir: nil))
-      end
-    end
-
-    should "raise file error" do
-      assert_raise Scourb::FileException do
-        Scourb::Coward.new(attrs.merge(file: nil))
-      end
-    end
-
     should "raise find error" do
       assert_raise Scourb::FindException do
         Scourb::Coward.new(attrs.merge(find: nil))
