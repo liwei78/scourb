@@ -52,6 +52,7 @@ module Scourb
 
     private 
       def checkit(file)
+        p file if @debug
         IO.foreach(file) do |line|
           p line if @debug
           
