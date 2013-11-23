@@ -5,7 +5,7 @@ module Scourb
 
   class Coward
 
-    attr_accessor :dir, :find, :ext, :reports, :charset
+    attr_accessor :dir, :find, :ext, :reports, :charset, :reportname
 
     def initialize(opt)
 
@@ -16,6 +16,7 @@ module Scourb
       @ext     = opt[:ext]||'*'
       @charset = opt[:charset]
       @reports = []
+      @reportname = opt[:report]||'report'
       
     end
 
@@ -35,16 +36,23 @@ module Scourb
         bloop -= 1
       end
       p "*" * 30
-      p @reports
       totaltime = Time.now - btime
+      p "Found #{@reports.length}." unless @reports.empty?
       p "Take #{totaltime} sec."
       p "#{(totaltime / itemscount)*1000} ms/file"
+    end
+
+    def savereport
+      File.open("#{@reportname}.txt", "w") do |file|
+        @reports.each do |line|
+          file.write(line)
+        end
+      end unless @reports.empty?
     end
 
     private 
       def checkit(file)
         IO.foreach(file) do |line|
-          str = line
           
           # http://www.redmine.org/projects/redmine/repository/revisions/11440/diff/trunk/lib/tasks/migrate_from_mantis.rake
           if @charset
@@ -53,6 +61,8 @@ module Scourb
             else
               str = line.to_s.force_encoding(@charset.upcase).encode('UTF-8')
             end
+          else
+            str = line
           end
 
           unless str.inspect.scan(@find).empty?

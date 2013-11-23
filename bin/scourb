@@ -12,17 +12,18 @@ program :description, 'Find word in files, such as hack-word in HTMLs.'
 
 default_command :grep
 
-# ./bin/scourb -F 兑现，从表面到内在，从一时之需到制度创新 -E html -C gbk
+# ./bin/scourb -F 兑现，从表面到内在，从一时之需到制度创新 -E html -D sample -C gbk
 # ./bin/scourb --find=兑现，从表面到内在，从一时之需到制度创新 --ext=html --charset=gbk
 
 command :grep do |cmd|
   cmd.syntax = 'scourb greb <arg> [opt]'
-  cmd.description = 'sh grep'
+  cmd.description = 'grep files with word'
 
   cmd.option '-D', '--dir DIR[,DIR,...]', Array, 'target dirs, `--dir=html,uploads,data` eg.'
   cmd.option '-F', '--find WORD', String, 'finding word'
   cmd.option '-C', '--charset ENCODE', String, 'default utf-8, `--charset=gbk`'
   cmd.option '-E', '--ext EXT', String, 'file.ext, such as `html`'
+  cmd.option '-R', '--report NAME', String, 'report name, default is `report`.txt'
   
   cmd.action do |arg, opt|
     Scourb::Command.grep(opt.__hash__)
