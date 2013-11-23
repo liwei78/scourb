@@ -72,10 +72,13 @@ module Scourb
         unless str.inspect.scan(@find).empty?
           @reports << file
         end
-      rescue
-        p '-'*30
-        p file if @debug
-        p line if @debug
+      rescue Exception => e
+        if @debug
+          p '-'*30
+          p e.to_s
+          p file 
+          p line
+        end
       end
 
   end
