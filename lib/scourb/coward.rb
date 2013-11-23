@@ -51,27 +51,33 @@ module Scourb
     end
 
     private 
+      # http://www.redmine.org/projects/redmine/repository/revisions/11440/diff/trunk/lib/tasks/migrate_from_mantis.rake
       def checkit(file)
-        p file if @debug
         IO.foreach(file) do |line|
-          p line if @debug
-          
-          # http://www.redmine.org/projects/redmine/repository/revisions/11440/diff/trunk/lib/tasks/migrate_from_mantis.rake
-          if @charset
-            if RUBY_VERSION < '1.9'
-              str = Iconv.iconv("UTF-8//IGNORE", "#{@charset.upcase}//IGNORE", line) 
-            else
-              str = line.to_s.force_encoding(@charset.upcase).encode('UTF-8')
-            end
-          else
-            str = line
-          end
-
-          unless str.inspect.scan(@find).empty?
-            @reports << file
-            break
-          end
+          debug_loop_check(file, line)
         end
+      end
+
+      def debug_loop_check(file, line)
+        if @charset
+          if RUBY_VERSION < '1.9'
+            str = Iconv.iconv("UTF-8//IGNORE", "#{@charset.upcase}//IGNORE", line) 
+          else
+            str = line.to_s.force_encoding(@charset.upcase).encode('UTF-8')
+          end
+        else
+          str = line
+        end
+
+        unless str.inspect.scan(@find).empty?
+          @reports << file
+          break
+        end
+      ensure
+        p '-'*30
+        p file if @debug
+        p line if @debug
+        next
       end
 
   end
