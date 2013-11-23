@@ -5,7 +5,7 @@ module Scourb
 
   class Coward
 
-    attr_accessor :dir, :find, :ext, :reports, :charset, :reportname
+    attr_accessor :dir, :find, :ext, :reports, :charset, :reportname, :debug
 
     def initialize(opt)
 
@@ -17,7 +17,7 @@ module Scourb
       @charset = opt[:charset]
       @reports = []
       @reportname = opt[:report]||'report'
-      
+      @debug   = opt[:debug]||false
     end
 
     def get_files
@@ -39,7 +39,7 @@ module Scourb
       totaltime = Time.now - btime
       p "Found #{@reports.length}." unless @reports.empty?
       p "Take #{totaltime} sec."
-      p "#{(totaltime / itemscount)*1000} ms/file"
+      p "#{(totaltime / itemscount)*1000} ms/file" if itemscount > 0
     end
 
     def savereport
@@ -53,6 +53,7 @@ module Scourb
     private 
       def checkit(file)
         IO.foreach(file) do |line|
+          p line if @debug
           
           # http://www.redmine.org/projects/redmine/repository/revisions/11440/diff/trunk/lib/tasks/migrate_from_mantis.rake
           if @charset
